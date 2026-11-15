@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const inputStyle = { padding: '10px', color: '#111', background: 'white', border: '1px solid #999', borderRadius: '4px' }
+const inputStyle = { padding: '12px', color: '#111', background: 'white', border: '1px solid #e2e8f0', borderRadius: '10px' }
+const card = { background: 'white', borderRadius: '14px', padding: '16px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }
 
 export default function Products() {
   const [products, setProducts] = useState<any[]>([])
@@ -72,10 +73,10 @@ export default function Products() {
 
   return (
     <div style={{ color: '#111' }}>
-      <h1>Products / Stock</h1>
+      <h1 style={{ fontSize: 28 }}>📦 Products / Stock</h1>
       <p><a href="/">← Back to Dashboard</a></p>
 
-      <form onSubmit={addProduct} style={{ background: 'white', padding: '15px', borderRadius: '8px', display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', border: '1px solid #ddd' }}>
+      <form onSubmit={addProduct} style={{ ...card, display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
         <input placeholder="Product name *" value={name} onChange={e => setName(e.target.value)} required style={inputStyle} />
         <input placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} style={inputStyle} />
         <input placeholder="Barcode / SKU" value={barcode} onChange={e => setBarcode(e.target.value)} style={inputStyle} />
@@ -83,7 +84,7 @@ export default function Products() {
         <input placeholder="Cost Price" type="number" step="0.01" value={cost} onChange={e => setCost(e.target.value)} style={{ ...inputStyle, width: '120px' }} />
         <input placeholder="Stock Qty" type="number" value={stock} onChange={e => setStock(e.target.value)} style={{ ...inputStyle, width: '120px' }} />
         <input placeholder="Low stock at" type="number" value={lowStock} onChange={e => setLowStock(e.target.value)} style={{ ...inputStyle, width: '110px' }} />
-        <button style={{ padding: '10px 16px', background: '#111', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Product</button>
+        <button style={{ padding: '10px 16px', background: '#16a34a', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Product</button>
       </form>
 
       <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
@@ -93,7 +94,7 @@ export default function Products() {
         </select>
       </div>
 
-      <table style={{ width: '100%', background: 'white', borderRadius: '8px', borderCollapse: 'collapse', color: '#111' }}>
+      <table style={{ width: '100%', background: 'white', borderRadius: '14px', borderCollapse: 'collapse', overflow: 'hidden' }}>
         <thead><tr style={{ textAlign: 'left', borderBottom: '2px solid #ddd' }}>
           <th style={{ padding: '10px' }}>Product</th><th style={{ padding: '10px' }}>Price</th><th style={{ padding: '10px' }}>Cost</th><th style={{ padding: '10px' }}>Stock</th><th style={{ padding: '10px' }}>Status</th><th style={{ padding: '10px' }}>Profit / unit</th><th style={{ padding: '10px' }}>Actions</th>
         </tr></thead>

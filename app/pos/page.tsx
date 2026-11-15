@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const inputStyle = { padding: '10px', color: '#111', background: 'white', border: '1px solid #999', borderRadius: '4px' }
+const inputStyle = { padding: '12px', color: '#111', background: 'white', border: '1px solid #e2e8f0', borderRadius: '10px' }
 const btn = { padding: '10px 16px', background: '#111', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }
 
 type CartItem = { id: string, name: string, price: number, cost: number, stock: number, qty: number }
@@ -169,7 +169,7 @@ export default function POS() {
 
           <div style={{ display: 'flex', gap: 8 }}>
             <button onClick={() => setCart([])} style={{ ...btn, background: '#eee', color: '#111', flex: 1 }}>Clear</button>
-            <button onClick={checkout} disabled={loading || cart.length === 0} style={{ ...btn, flex: 2, background: 'green' }}>{loading ? 'Processing...' : `Charge N$${total.toFixed(2)}`}</button>
+            <button onClick={checkout} disabled={loading || cart.length === 0} style={{ ...btn, flex: 2, background: '#16a34a' }}>{loading ? 'Processing...' : `Charge N$${total.toFixed(2)}`}</button>
           </div>
         </div>
       </div>
