@@ -154,6 +154,7 @@ const profitForSelected = selected?.status === 'refunded' ? 0 : items.reduce((su
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
               <button onClick={printReceipt} style={{ padding: '10px 14px', background: '#111', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer' }}>🖨️ Print</button>
               <button onClick={shareWhatsApp} style={{ padding: '10px 14px', background: '#25D366', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer' }}>WhatsApp Receipt</button>
+              <button onClick={copyReceipt} style={{ padding: '10px 14px', background: '#eee', color: '#111', border: '1px solid #999', borderRadius: 6, cursor: 'pointer' }}>📋 Copy Receipt</button>
               {selected.status !== 'refunded' && (
                 <button onClick={refundSale} style={{ padding: '10px 14px', background: '#dc3545', color: 'white', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Refund Sale</button>
               )}
