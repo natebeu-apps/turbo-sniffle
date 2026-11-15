@@ -9,6 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="/customers" style={{ color: 'white', textDecoration: 'none' }}>Customers</a>
           <a href="/products" style={{ color: 'white', textDecoration: 'none' }}>Products / Stock</a>
           <a href="/pos" style={{ color: 'white', textDecoration: 'none' }}>POS Till</a>
+          <a href="/sales" style={{ color: 'white', textDecoration: 'none' }}>Sales History</a>
           <a href="/invoices" style={{ color: 'white', textDecoration: 'none' }}>Invoices</a>
           <a href="/expenses" style={{ color: 'white', textDecoration: 'none' }}>Expenses</a>
         </nav>
