@@ -58,19 +58,37 @@ export default function SalesPage() {
     window.print()
   }
 
-  function shareWhatsApp() {
-    if (!selected) return
-    let text = `🧾 RECEIPT - ${selected.sale_number}\n`
+  function getReceiptText() {
+    if (!selected) return ''
+    let text = `RECEIPT - ${selected.sale_number}\n`
     text += `Customer: ${selected.customer_name}\n`
     text += `Date: ${new Date(selected.created_at).toLocaleString()}\n\n`
     items.forEach(i => { text += `${i.product_name} x ${i.qty} = N$${Number(i.total).toFixed(2)}\n` })
     text += `\nTotal: N$${Number(selected.total).toFixed(2)}\nPayment: ${selected.payment_method}\n`
     if (selected.payment_method === 'Cash') text += `Tendered: N$${Number(selected.amount_tendered).toFixed(2)} | Change: N$${Number(selected.change_due).toFixed(2)}\n`
+    if (selected.status === 'refunded') text += `\n*** REFUNDED ***\n`
     text += `\nThank you!`
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-  }
+    return text
+}
 
-  const profitForSelected = items.reduce((sum, i) => sum + (Number(i.price) - Number(i.cost)) * Number(i.qty), 0)
+function shareWhatsApp() {
+  if (!selected) return
+  // web.whatsapp.com works on PC, wa.me works on phone
+  const text = getReceiptText()
+  window.open(`https://web.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')
+}
+
+async function copyReceipt() {
+  const text = getReceiptText()
+  try {
+     await navigator.clipboard.writeText(text)
+    alert('Receipt copied! Paste it in WhatsApp / SMS')
+  } catch {
+    alert(text)
+  }
+}
+
+const profitForSelected = selected?.status === 'refunded' ? 0 : items.reduce((sum, i) => sum + (Number(i.price) - Number(i.cost)) * Number(i.qty), 0)
 
   return (
     <div style={{ color: '#111' }}>
