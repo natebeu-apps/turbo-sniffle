@@ -46,6 +46,7 @@ export default function Dashboard() {
       <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '20px' }}>
         <div style={card}><small>Customers</small><h2>{stats.customers}</h2><Link href="/customers">View Customers →</Link></div>
         <div style={card}><small>Products</small><h2>{stats.products}</h2><Link href="/products">View Products →</Link></div>
+        <div style={card}><small>POS Till</small><h2><Link href="/pos">Open Till →</Link></h2></div>
         <div style={card}><small>Invoices</small><h2><Link href="/invoices">Create Invoice →</Link></h2></div>
         <div style={card}><small>Expenses</small><h2><Link href="/expenses">Add Expense →</Link></h2></div>
       </div>
