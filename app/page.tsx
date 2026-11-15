@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
@@ -22,9 +23,14 @@ export default function Dashboard() {
     const { data: c } = await supabase.from('customers').select('*')
     setCustomers(c || [])
   }
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    setTodayStr(new Date().toDateString())
+    setTodayLabel(new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))
+    load()
+  }, [])
 
-  const todayStr = new Date().toDateString()
+  const [todayStr, setTodayStr] = useState('')
+  const [todayLabel, setTodayLabel] = useState('')
   const todaySales = sales.filter(s => new Date(s.created_at).toDateString() === todayStr && s.status !== 'refunded')
   const todayTotal = todaySales.reduce((sum, s) => sum + Number(s.total || 0), 0)
   const todayItems = saleItems.filter(i => new Date(i.created_at).toDateString() === todayStr)
@@ -60,7 +66,7 @@ export default function Dashboard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ fontSize: 30, margin: 0 }}>Good day 👋</h1>
-          <p style={{ color: '#64748b', margin: '6px 0 0' }}>{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} • Here's your business today</p>
+          <p style={{ color: '#64748b', margin: '6px 0 0' }}>{todayLabel} • Here's your business today</p>
         </div>
         <Link href="/pos" style={{ background: '#22c55e', color: 'white', padding: '14px 22px', borderRadius: 12, textDecoration: 'none', fontWeight: '800', fontSize: 16 }}>🛒 Open POS Till →</Link>
       </div>
