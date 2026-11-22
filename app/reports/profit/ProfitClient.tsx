@@ -105,7 +105,6 @@ export default function ProfitClient() {
         ))}
       </div>
 
-      <p style={{ color: '#94a3b8', fontSize: 13, marginTop: 12 }}>Tip: If Cost shows N$0.00, go to Products > set cost_price for each product. Profit will fix itself instantly.</p>
-    </div>
+    <p style={{ color: '#94a3b8', fontSize: 13, marginTop: 12 }}>Tip: If Cost shows N$0.00, go to Products and set cost_price for each product. Profit will fix itself instantly.</p>    </div>
   )
 }
