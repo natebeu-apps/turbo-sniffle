@@ -14,15 +14,37 @@ export default function DashboardClient() {
   const [range, setRange] = useState('week')
 
   async function load() {
-    const { data: s } = await supabase.from('sales').select('*').order('created_at', { ascending: false }).limit(1000)
-    setSales(s || [])
-    const { data: p } = await supabase.from('products').select('*')
-    setProducts(p || [])
-    const { data: si } = await supabase.from('sale_items').select('*').limit(5000)
-    setSaleItems(si || [])
-    const { data: e } = await supabase.from('expenses').select('*')
-    setExpenses(e || [])
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  // 1. Get MY store only
+  const { data: myStore } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!myStore) {
+    // No store yet for this user = blank dashboard, correct for B
+    setSales([])
+    setProducts([])
+    setSaleItems([])
+    setExpenses([])
+    return
   }
+
+  const storeId = myStore.id
+
+  // 2. Now load ONLY this store's data
+  const { data: s } = await supabase.from('sales').select('*').eq('store_id', storeId).order('created_at', { ascending: false }).limit(1000)
+  setSales(s || [])
+  const { data: p } = await supabase.from('products').select('*').eq('store_id', storeId)
+  setProducts(p || [])
+  const { data: si } = await supabase.from('sale_items').select('*').eq('store_id', storeId).limit(5000)
+  setSaleItems(si || [])
+  const { data: e } = await supabase.from('expenses').select('*').eq('store_id', storeId)
+  setExpenses(e || [])
+}
   useEffect(() => { load() }, [])
 
   function inRange(dstr: string) {

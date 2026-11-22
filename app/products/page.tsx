@@ -36,6 +36,7 @@ export default function Products() {
     e.preventDefault()
     if (!name) return alert('Please enter a name')
     const { error } = await supabase.from('products').insert({
+      store_id: '84c7967f-66a2-4813-bfd6-997d849ab5a0',
       name,
       category: category || 'General',
       barcode: barcode || null,

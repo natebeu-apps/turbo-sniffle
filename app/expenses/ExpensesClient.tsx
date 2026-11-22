@@ -63,7 +63,7 @@ export default function ExpensesClient() {
 
   async function addExpense() {
     if (!title || !amount) return alert('Add a title and amount')
-    const { error } = await supabase.from('expenses').insert([{ title, category, amount: Number(amount), expense_date: date }])
+    const { error } = await supabase.from('expenses').insert([{ store_id: '84c7967f-66a2-4813-bfd6-997d849ab5a0', title, category, amount: Number(amount), expense_date: date }])
     if (error) return alert(error.message)
     setTitle(''); setAmount(''); load()
   }

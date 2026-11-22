@@ -67,6 +67,7 @@ export default function POSClient() {
     const itemsForDb = cart.map(i => ({ product_id: i.id, name: i.name, price: i.price, quantity: i.qty, qty: i.qty, total: i.price * i.qty }))
 
     const { data: sale, error } = await supabase.from('sales').insert([{
+      store_id: '84c7967f-66a2-4813-bfd6-997d849ab5a0',
       total,
       payment_method: payment,
       status: 'completed',
@@ -84,6 +85,7 @@ export default function POSClient() {
     // Try sale_items table if you have it - ignore if it does not exist
     if (sale?.id) {
       await supabase.from('sale_items').insert(cart.map(i => ({
+        store_id: '84c7967f-66a2-4813-bfd6-997d849ab5a0',
         sale_id: sale.id,
         product_id: i.id,
         name: i.name,
