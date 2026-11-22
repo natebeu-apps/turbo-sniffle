@@ -11,6 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="/pos" style={{ color: 'white', textDecoration: 'none', padding: '8px 14px', borderRadius: 8, background: '#22c55e', fontWeight: '700' }}>🛒 POS Till</a>
           <a href="/sales" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>Sales</a>
           <a href="/shifts" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>💰 Shifts</a>
+          <a href="/reports/profit" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>📈 Profit</a>
           <a href="/purchases" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>Purchases</a>
           <a href="/invoices" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>Invoices</a>
           <a href="/expenses" style={{ color: '#e2e8f0', textDecoration: 'none', padding: '8px 12px', borderRadius: 8 }}>Expenses</a>
