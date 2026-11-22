@@ -75,7 +75,7 @@ export default function Purchases() {
 
   return (
     <div style={{ color: '#111' }}>
-      <h1 style={{ fontSize: 28, marginBottom: 4 }}>📦 Purchases</h1>
+      <h1 style={{ fontSize: 28, marginBottom: 4 }}>Purchases</h1>
       <p style={{ color: '#64748b', marginTop: 0 }}>Buy stock from suppliers - stock goes UP automatically.</p>
 
       <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -138,7 +138,7 @@ export default function Purchases() {
 
         {selected && (
           <div style={{ flex: 1, minWidth: 280, ...card }}>
-            <h3>📄 {selected.purchase_number}</h3>
+            <h3>{selected.purchase_number}</h3>
             <p>Supplier: {selected.supplier_name}<br />Date: {new Date(selected.created_at).toLocaleString()}</p>
             {items.map(i => <div key={i.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}><span>{i.product_name} x {i.qty} @ N${i.cost}</span><b>N${Number(i.total).toFixed(2)}</b></div>)}
             <hr /><div style={{ display: 'flex', justifyContent: 'space-between' }}><b>Total</b><b>N${Number(selected.total).toFixed(2)}</b></div>

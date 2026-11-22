@@ -42,7 +42,7 @@ export default function OrderClient() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 28, margin: 0 }}>📦 Order List - Low Stock</h1>
+      <h1 style={{ fontSize: 28, margin: 0 }}>Order List - Low Stock</h1>
       <p style={{ color: '#64748b' }}>Everything at or below its reorder level. Set how many to order, then copy or send it.</p>
 
       <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>

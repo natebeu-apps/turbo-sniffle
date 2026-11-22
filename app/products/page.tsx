@@ -73,7 +73,7 @@ export default function Products() {
 
   return (
     <div style={{ color: '#111' }}>
-      <h1 style={{ fontSize: 28 }}>📦 Products / Stock</h1>
+      <h1 style={{ fontSize: 28 }}>Products / Stock</h1>
       <p><a href="/">← Back to Dashboard</a></p>
 
       <form onSubmit={addProduct} style={{ ...card, display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>

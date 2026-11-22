@@ -50,7 +50,7 @@ export default function DailyClient() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: 28, margin: 0 }}>🧾 Daily Summary</h1>
+          <h1 style={{ fontSize: 28, margin: 0 }}>Daily Summary</h1>
           <p style={{ color: '#64748b' }}>{new Date().toLocaleDateString()} - End of day printout</p>
         </div>
         <button onClick={() => window.print()} style={{ padding: '12px 20px', borderRadius: 999, background: '#0f172a', color: 'white', fontWeight: '700', border: 'none', cursor: 'pointer' }}>Print / Save as PDF</button>

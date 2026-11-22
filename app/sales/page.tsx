@@ -129,7 +129,7 @@ const profitForSelected = selected?.status === 'refunded' ? 0 : items.reduce((su
         {/* DETAIL / RECEIPT */}
         {selected && (
           <div style={{ flex: 1, minWidth: 300, background: 'white', padding: 16, borderRadius: 10, border: '1px solid #ddd' }}>
-            <h3 style={{ marginTop: 0 }}>🧾 {selected.sale_number}</h3>
+            <h3 style={{ marginTop: 0 }}>{selected.sale_number}</h3>
             <p>Customer: <b>{selected.customer_name}</b><br />
             Date: {new Date(selected.created_at).toLocaleString()}<br />
             Payment: {selected.payment_method}<br />

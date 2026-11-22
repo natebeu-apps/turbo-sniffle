@@ -79,7 +79,7 @@ export default function ProfitClient() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 28, margin: 0 }}>📈 Profit Report</h1>
+      <h1 style={{ fontSize: 28, margin: 0 }}>Profit Report</h1>
       <p style={{ color: '#64748b' }}>Revenue - Cost = What you actually keep.</p>
 
       <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
@@ -95,7 +95,7 @@ export default function ProfitClient() {
       </div>
 
       <div style={{ ...card, marginTop: 16 }}>
-        <h3 style={{ marginTop: 0 }}>🏆 Profit by Product</h3>
+        <h3 style={{ marginTop: 0 }}>Profit by Product</h3>
         {sorted.length === 0 && <p style={{ color: '#94a3b8' }}>No product breakdown yet. This happens if your products have no cost_price set, or your sales don't link to products. Set cost_price in Products and do a test sale.<br /><br />Check: Total Cost shows N${totalCost.toFixed(2)} - if it's 0, costs are missing.</p>}
         {sorted.map(p => (
           <div key={p.name} style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, padding: '12px 0', borderBottom: '1px solid #f1f5f9' }}>

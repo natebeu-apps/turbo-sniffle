@@ -68,7 +68,7 @@ export default function ShiftsClient() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 28, margin: 0 }}>💰 Cash Shifts / Daily Close</h1>
+      <h1 style={{ fontSize: 28, margin: 0 }}>Cash Shifts / Daily Close</h1>
       <p style={{ color: '#64748b' }}>Open in the morning, close at night. Know exactly what should be in the till.</p>
 
       {!openShift ? (
