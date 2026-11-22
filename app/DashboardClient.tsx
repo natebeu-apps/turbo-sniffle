@@ -83,15 +83,66 @@ export default function DashboardClient() {
   const lowStock = products.filter(p => Number(p.stock || 0) <= Number(p.reorder_level ?? 5))
   const best = Object.values(byProduct).sort((a, b) => b.revenue - a.revenue).slice(0, 5)
 
-  // Last 7 days chart
-  const days: { label: string, total: number }[] = []
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i)
-    const label = d.toLocaleDateString('en', { weekday: 'short' })
-    const total = sales.filter(s => s.status !== 'refunded' && new Date(s.created_at).toDateString() === d.toDateString()).reduce((a, s) => a + Number(s.total || 0), 0)
-    days.push({ label, total })
+  // Dynamic chart - follows the period buttons
+  function totalOn(dateStr: string) {
+    return sales.filter(s => s.status !== 'refunded' && new Date(s.created_at).toDateString() === dateStr).reduce((a, s) => a + Number(s.total || 0), 0)
   }
-  const maxDay = Math.max(...days.map(d => d.total), 1)
+  function totalBetween(start: Date, end: Date) {
+    return sales.filter(s => {
+      if (s.status === 'refunded') return false
+      const d = new Date(s.created_at)
+      return d >= start && d <= end
+    }).reduce((a, s) => a + Number(s.total || 0), 0)
+  }
+
+  let chartTitle = 'Sales Performance - Last 7 Days'
+  let chartPoints: { label: string, total: number }[] = []
+
+  if (range === 'today') {
+    chartTitle = 'Sales Performance - Today by Hour'
+    const buckets = [
+      { label: '6-9am', from: 6, to: 9 },
+      { label: '9-12pm', from: 9, to: 12 },
+      { label: '12-2pm', from: 12, to: 14 },
+      { label: '2-4pm', from: 14, to: 16 },
+      { label: '4-6pm', from: 16, to: 18 },
+      { label: '6-9pm', from: 18, to: 21 },
+      { label: '9pm+', from: 21, to: 24 },
+    ]
+    chartPoints = buckets.map(b => {
+      const total = sales.filter(s => {
+        if (s.status === 'refunded') return false
+        const d = new Date(s.created_at)
+        return d.toDateString() === new Date().toDateString() && d.getHours() >= b.from && d.getHours() < b.to
+      }).reduce((a, s) => a + Number(s.total || 0), 0)
+      return { label: b.label, total }
+    })
+  } else if (range === 'week') {
+    chartTitle = 'Sales Performance - Last 7 Days'
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i)
+      chartPoints.push({ label: d.toLocaleDateString('en', { weekday: 'short' }), total: totalOn(d.toDateString()) })
+    }
+  } else if (range === 'month') {
+    chartTitle = 'Sales Performance - This Month by Week'
+    const now = new Date()
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    for (let w = 0; w < 5; w++) {
+      const s = new Date(startOfMonth); s.setDate(startOfMonth.getDate() + (w * 7))
+      const e = new Date(s); e.setDate(s.getDate() + 6); e.setHours(23, 59, 59, 999)
+      if (s > now) break
+      chartPoints.push({ label: `Week ${w + 1}`, total: totalBetween(s, e) })
+    }
+  } else {
+    chartTitle = 'Sales Performance - Last 6 Months'
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(); d.setFullYear(d.getFullYear(), d.getMonth() - i, 1)
+      const s = new Date(d.getFullYear(), d.getMonth(), 1)
+      const e = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999)
+      chartPoints.push({ label: d.toLocaleDateString('en', { month: 'short' }), total: totalBetween(s, e) })
+    }
+  }
+  const maxDay = Math.max(...chartPoints.map(d => d.total), 1)
 
   return (
     <div>
@@ -119,9 +170,9 @@ export default function DashboardClient() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 12, marginTop: 12 }}>
         <div style={card}>
-          <h3 style={{ marginTop: 0 }}>Sales Performance - Last 7 Days</h3>
+          <h3 style={{ marginTop: 0 }}>{chartTitle}</h3>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 140, paddingTop: 8 }}>
-            {days.map(d => (
+            {chartPoints.map(d => (
               <div key={d.label} style={{ flex: 1, textAlign: 'center' }}>
                 <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>N${d.total.toFixed(0)}</div>
                 <div style={{ height: Math.max((d.total / maxDay) * 100, 4), background: '#16a34a', borderRadius: '8px 8px 0 0' }}></div>
