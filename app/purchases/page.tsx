@@ -132,7 +132,7 @@ export default function Purchases() {
           ))}
           {cart.length === 0 && <p style={{ color: '#94a3b8' }}>Tap a product to add it to this purchase.</p>}
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 20, marginTop: 12 }}><span>Total Cost</span><b style={{ color: '#16a34a' }}>N${total.toFixed(2)}</b></div>
-          <button onClick={receivePurchase} style={{ width: '100%', marginTop: 12, padding: 14, background: '#16a34a', color: 'white', border: 'none', borderRadius: 10, fontSize: 16, fontWeight: '700', cursor: 'pointer' }}>✅ Receive Stock</button>
+          <button onClick={receivePurchase} style={{ width: '100%', marginTop: 12, padding: 14, background: '#16a34a', color: 'white', border: 'none', borderRadius: 10, fontSize: 16, fontWeight: '700', cursor: 'pointer' }}>Receive Stock</button>
           <p style={{ fontSize: 12, color: '#64748b', textAlign: 'center' }}>This will increase stock + record cost.</p>
         </div>
 

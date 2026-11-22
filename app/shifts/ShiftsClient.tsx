@@ -73,7 +73,7 @@ export default function ShiftsClient() {
 
       {!openShift ? (
         <div style={{ ...card, marginTop: 16 }}>
-          <h3 style={{ marginTop: 0 }}>☀️ Open New Shift</h3>
+          <h3 style={{ marginTop: 0 }}>Open New Shift</h3>
           <p style={{ color: '#64748b' }}>How much cash is in the till right now?</p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <input style={inputStyle} type="number" placeholder="Opening cash e.g. 500" value={openingCash} onChange={e => setOpeningCash(e.target.value)} />
@@ -100,7 +100,7 @@ export default function ShiftsClient() {
       )}
 
       <div style={{ ...card, marginTop: 16 }}>
-        <h3 style={{ marginTop: 0 }}>📋 Past Shifts</h3>
+        <h3 style={{ marginTop: 0 }}>Past Shifts</h3>
         {shifts.length === 0 && <p style={{ color: '#94a3b8' }}>No shifts yet. Open your first one above.</p>}
         {shifts.map(s => {
           const t = s.status === 'closed' ? { cash: Number(s.cash_sales), card: Number(s.card_sales), eft: Number(s.eft_sales), total: Number(s.total_sales) } : totalsFor(s)
