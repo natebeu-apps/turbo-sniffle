@@ -93,8 +93,14 @@ const profitForSelected = selected?.status === 'refunded' ? 0 : items.reduce((su
   return (
     <div style={{ color: '#111' }}>
       <h1>Sales History</h1>
-      <p><a href="/">← Dashboard</a> | <a href="/pos">→ Open POS Till</a></p>
-
+      <div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+        <a href="/" style={{ padding: '11px 18px', borderRadius: 999, border: '1px solid #e2e8f0', background: 'white', color: '#0f172a', fontWeight: '700', textDecoration: 'none', fontSize: 14 }}>
+          Back to Dashboard
+        </a>
+        <a href="/pos" style={{ padding: '11px 18px', borderRadius: 999, background: '#16a34a', color: 'white', fontWeight: '800', textDecoration: 'none', fontSize: 14 }}>
+          Open POS Till
+        </a>
+      </div>
       <div style={{ display: 'flex', gap: 15, marginBottom: 15 }}>
         <div style={{ background: 'white', padding: 15, borderRadius: 8, border: '1px solid #ddd', flex: 1 }}>
           <small>Total Sales (not refunded)</small><h2 style={{ color: 'green', margin: '5px 0' }}>N${todayTotal.toFixed(2)}</h2>

@@ -74,8 +74,14 @@ export default function Products() {
   return (
     <div style={{ color: '#111' }}>
       <h1 style={{ fontSize: 28 }}>Products / Stock</h1>
-      <p><a href="/">← Back to Dashboard</a></p>
-
+      <div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+        <a href="/" style={{ padding: '11px 18px', borderRadius: 999, border: '1px solid #e2e8f0', background: 'white', color: '#0f172a', fontWeight: '700', textDecoration: 'none', fontSize: 14 }}>
+          Back to Dashboard
+        </a>
+        <a href="/pos" style={{ padding: '11px 18px', borderRadius: 999, background: '#16a34a', color: 'white', fontWeight: '800', textDecoration: 'none', fontSize: 14 }}>
+          Open POS Till
+        </a>
+      </div>
       <form onSubmit={addProduct} style={{ ...card, display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
         <input placeholder="Product name *" value={name} onChange={e => setName(e.target.value)} required style={inputStyle} />
         <input placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} style={inputStyle} />
