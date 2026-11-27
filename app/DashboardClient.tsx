@@ -37,6 +37,7 @@ export default function DashboardClient() {
 
   // 2. Now load ONLY this store's data
   const { data: s } = await supabase.from('sales').select('*').eq('store_id', storeId).order('created_at', { ascending: false }).limit(1000)
+  console.log('DEBUG 3 - sales count:', s?.length, s) // <-- ADD THIS
   setSales(s || [])
   const { data: p } = await supabase.from('products').select('*').eq('store_id', storeId)
   setProducts(p || [])
