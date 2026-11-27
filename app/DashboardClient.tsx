@@ -15,6 +15,7 @@ export default function DashboardClient() {
 
   async function load() {
   const { data: { user } } = await supabase.auth.getUser()
+  console.log('DEBUG 1 - user:', user?.id, user?.email)
   if (!user) return
 
   // 1. Get MY store only
