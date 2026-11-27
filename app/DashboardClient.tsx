@@ -19,11 +19,12 @@ export default function DashboardClient() {
   if (!user) return
 
   // 1. Get MY store only
-  const { data: myStore } = await supabase
+  const { data: myStore, error: storeError } = await supabase
     .from('stores')
     .select('id')
     .eq('owner_id', user.id)
     .single()
+  console.log('DEBUG 2 - myStore:', myStore, 'error:', storeError)
 
   if (!myStore) {
     // No store yet for this user = blank dashboard, correct for B
