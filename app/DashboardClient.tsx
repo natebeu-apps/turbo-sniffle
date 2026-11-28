@@ -12,44 +12,81 @@ export default function DashboardClient() {
   const [saleItems, setSaleItems] = useState<any[]>([])
   const [expenses, setExpenses] = useState<any[]>([])
   const [range, setRange] = useState('week')
+  const [hasStore, setHasStore] = useState(true)
+  const [newStoreName, setNewStoreName] = useState('')
+  const [creating, setCreating] = useState(false)
 
   async function load() {
-  const { data: { user } } = await supabase.auth.getUser()
-  console.log('DEBUG 1 - user:', user?.id, user?.email)
-  if (!user) return
+    const { data: { user } } = await supabase.auth.getUser()
+    console.log('DEBUG 1 - user:', user?.id, user?.email)
+    if (!user) return
 
-  // 1. Get MY store only
-  const { data: myStore, error: storeError } = await supabase
-    .from('stores')
-    .select('id')
-    .eq('owner_id', user.id)
-    .single()
-  console.log('DEBUG 2 - myStore:', myStore, 'error:', storeError)
+    // 1. Get MY store only
+    const { data: myStore, error: storeError } = await supabase
+      .from('stores')
+      .select('id')
+      .eq('owner_id', user.id)
+      .single()
+    console.log('DEBUG 2 - myStore:', myStore, 'error:', storeError)
 
-  if (!myStore) {
-    // No store yet for this user = blank dashboard, correct for B
-    setSales([])
-    setProducts([])
-    setSaleItems([])
-    setExpenses([])
-    return
+    if (!myStore) {
+      setHasStore(false)
+      setSales([])
+      setProducts([])
+      setSaleItems([])
+      setExpenses([])
+      return
+    }
+    setHasStore(true)
+
+    const storeId = myStore.id
+
+    // 2. Now load ONLY this store's data
+    const { data: s } = await supabase.from('sales').select('*').eq('store_id', storeId).order('created_at', { ascending: false }).limit(1000)
+    console.log('DEBUG 3 - sales count:', s?.length, s)
+    setSales(s || [])
+    const { data: p } = await supabase.from('products').select('*').eq('store_id', storeId)
+    setProducts(p || [])
+    const { data: si } = await supabase.from('sale_items').select('*').eq('store_id', storeId).limit(5000)
+    setSaleItems(si || [])
+    const { data: e } = await supabase.from('expenses').select('*').eq('store_id', storeId)
+    setExpenses(e || [])
   }
 
-  const storeId = myStore.id
-
-  // 2. Now load ONLY this store's data
-  const { data: s } = await supabase.from('sales').select('*').eq('store_id', storeId).order('created_at', { ascending: false }).limit(1000)
-  console.log('DEBUG 3 - sales count:', s?.length, s) // <-- ADD THIS
-  setSales(s || [])
-  const { data: p } = await supabase.from('products').select('*').eq('store_id', storeId)
-  setProducts(p || [])
-  const { data: si } = await supabase.from('sale_items').select('*').eq('store_id', storeId).limit(5000)
-  setSaleItems(si || [])
-  const { data: e } = await supabase.from('expenses').select('*').eq('store_id', storeId)
-  setExpenses(e || [])
-}
   useEffect(() => { load() }, [])
 
+  async function createStore() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user || !newStoreName.trim()) return
+    setCreating(true)
+    const { error } = await supabase.from('stores').insert({
+      owner_id: user.id,
+      name: newStoreName.trim()
+    })
+    setCreating(false)
+    if (error) { alert(error.message); return }
+    load()
+  }
+
+  // 3. If no store, show create-shop screen instead of dashboard
+  if (!hasStore) {
+    return (
+      <div style={{ maxWidth: 400, margin: '60px auto', padding: 20, textAlign: 'center' }}>
+        <h1>Welcome! Create your shop</h1>
+        <p>You don't have a store yet.</p>
+        <input
+          placeholder="My Shop Name"
+          value={newStoreName}
+          onChange={e => setNewStoreName(e.target.value)}
+          style={{ display: 'block', width: '100%', padding: 12, marginBottom: 10, borderRadius: 8, border: '1px solid #ddd' }}
+        />
+        <button onClick={createStore} disabled={creating} style={{ width: '100%', padding: 13, background: '#16a34a', color: 'white', border: 'none', borderRadius: 10, fontWeight: '800' }}>
+          {creating ? 'Creating...' : 'Create My Shop'}
+        </button>
+      </div>
+    )
+  }
+  
   function inRange(dstr: string) {
     const d = new Date(dstr)
     const now = new Date()
