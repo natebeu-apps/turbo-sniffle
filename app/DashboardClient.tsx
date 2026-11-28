@@ -86,7 +86,7 @@ export default function DashboardClient() {
       </div>
     )
   }
-  
+
   function inRange(dstr: string) {
     const d = new Date(dstr)
     const now = new Date()
@@ -208,6 +208,18 @@ export default function DashboardClient() {
 
   return (
     <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <h1 style={{ margin: 0 }}>Dashboard</h1>
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut()
+          window.location.href = '/login'
+        }}
+        style={{ padding: '8px 14px', background: '#ef4444', color: 'white', border: 'none', borderRadius: 8, fontWeight: '700', cursor: 'pointer' }}
+      >
+        Log Out
+      </button>
+    </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: 28, margin: 0 }}>👋 Good day, here is your shop today</h1>
