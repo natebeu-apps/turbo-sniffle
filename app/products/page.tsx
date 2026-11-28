@@ -17,12 +17,34 @@ export default function Products() {
   const [stock, setStock] = useState('')
   const [lowStock, setLowStock] = useState('5')
 
-  async function load() {
-    const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false })
-    if (error) alert('Load error: ' + error.message)
-    setProducts(data || [])
+async function load() {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  // 1. Get MY store only
+  const { data: myStore } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!myStore) {
+    setProducts([])
+    return
   }
-  useEffect(() => { load() }, [])
+  const storeId = myStore.id
+
+  // 2. Load ONLY my store's products
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('store_id', storeId)
+    .order('created_at', { ascending: false })
+
+  if (error) alert('Load error: ' + error.message)
+  setProducts(data || [])
+}
+useEffect(() => { load() }, [])
 
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category || 'General')))]
 

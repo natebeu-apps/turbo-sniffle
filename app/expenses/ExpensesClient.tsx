@@ -19,15 +19,35 @@ export default function ExpensesClient() {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
   const [range, setRange] = useState('month')
 
-  async function load() {
-    const { data: e } = await supabase.from('expenses').select('*').order('expense_date', { ascending: false })
-    setExpenses(e || [])
-    const { data: s } = await supabase.from('sales').select('*').order('created_at', { ascending: false }).limit(1000)
-    setSales(s || [])
-    const { data: p } = await supabase.from('products').select('*')
-    setProducts(p || [])
-    const { data: si } = await supabase.from('sale_items').select('*').limit(5000)
-    setSaleItems(si || [])
+async function load() {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  // 1. Get MY store only
+  const { data: myStore } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!myStore) {
+    setExpenses([])
+    setSales([])
+    setProducts([])
+    setSaleItems([])
+    return
+  }
+  const storeId = myStore.id
+
+  // 2. Load ONLY my store's data
+  const { data: e } = await supabase.from('expenses').select('*').eq('store_id', storeId).order('expense_date', { ascending: false })
+  setExpenses(e || [])
+  const { data: s } = await supabase.from('sales').select('*').eq('store_id', storeId).order('created_at', { ascending: false }).limit(1000)
+  setSales(s || [])
+  const { data: p } = await supabase.from('products').select('*').eq('store_id', storeId)
+  setProducts(p || [])
+  const { data: si } = await supabase.from('sale_items').select('*').eq('store_id', storeId).limit(5000)
+  setSaleItems(si || [])
   }
   useEffect(() => { load() }, [])
 

@@ -18,12 +18,12 @@ export default function Purchases() {
   const [items, setItems] = useState<any[]>([])
 
   async function load() {
-    const { data: p } = await supabase.from('products').select('*').order('name')
-    setProducts(p || [])
-    const { data: s } = await supabase.from('suppliers').select('*').order('name')
-    setSuppliers(s || [])
-    const { data: pu } = await supabase.from('purchases').select('*').order('created_at', { ascending: false })
-    setPurchases(pu || [])
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+  const { data: myStore } = await supabase.from('stores').select('id').eq('owner_id', user.id).single()
+  if (!myStore) { setPurchases([]); return }
+  const { data } = await supabase.from('purchases').select('*').eq('store_id', myStore.id).order('created_at', { ascending: false })
+  setPurchases(data || [])
   }
   useEffect(() => { load() }, [])
 

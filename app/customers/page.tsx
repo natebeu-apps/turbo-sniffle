@@ -11,12 +11,34 @@ export default function Customers() {
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
 
-  async function load() {
-    const { data, error } = await supabase.from('customers').select('*').order('created_at', { ascending: false })
-    if (error) alert('Load error: ' + error.message)
-    setCustomers(data || [])
+async function load() {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  // 1. Get MY store only
+  const { data: myStore } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!myStore) {
+    setCustomers([])
+    return
   }
-  useEffect(() => { load() }, [])
+  const storeId = myStore.id
+
+  // 2. Load ONLY my store's customers
+  const { data, error } = await supabase
+    .from('customers')
+    .select('*')
+    .eq('store_id', storeId)
+    .order('created_at', { ascending: false })
+
+  if (error) alert('Load error: ' + error.message)
+  setCustomers(data || [])
+}
+useEffect(() => { load() }, [])
 
   async function addCustomer(e: any) {
     e.preventDefault()
